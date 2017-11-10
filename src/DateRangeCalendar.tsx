@@ -53,12 +53,6 @@ export class Picker extends SearchkitComponent<any, any> {
 
 
 export class DateRangeCalendar extends SearchkitComponent<any, any> {
-    refs: {
-        [key: string]: any;
-        dateFromInput: any;
-        dateToInput: any;
-    }
-
     constructor(props) {
     super(props)
     const { fromDate, toDate } = props
