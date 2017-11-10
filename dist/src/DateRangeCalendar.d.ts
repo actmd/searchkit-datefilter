@@ -13,5 +13,6 @@ export declare class DateRangeCalendar extends SearchkitComponent<any, any> {
     disabledPastDate: (endValue: any) => boolean;
     disabledStartDate: (endValue: any) => boolean;
     handleChange: (value: any) => void;
+    handleDateFinished: (event: any) => void;
     render(): JSX.Element;
 }

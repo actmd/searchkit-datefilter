@@ -1,11 +1,6 @@
 import * as React from "react";
 import * as moment from "moment";
-const styles = require("rc-calendar/assets/index.css");
-
-import {
-  SearchkitComponent,
-  SearchkitComponentProps
-} from "searchkit"
+import {SearchkitComponent} from "searchkit"
 
 const RcCalendar = require("rc-calendar")
 const RangeCalendar = require('rc-calendar/lib/RangeCalendar');
@@ -46,11 +41,8 @@ export class Picker extends SearchkitComponent<any, any> {
         {
           () => (
             <div className="sk-date-box">
-              <div className="sk-date-box__label" style={{flex:"1 0 80px"}}>
-                {this.props.dateInputPlaceholder}:
-              </div>
               <div className="sk-date-box__value" style={{flex:"1 0 50%"}}>
-                {showValue && moment(showValue).format(fullFormat)}
+                {(showValue && moment(showValue).format(fullFormat)) || props.dateInputPlaceholder}
               </div>
             </div>
           )
@@ -61,7 +53,13 @@ export class Picker extends SearchkitComponent<any, any> {
 
 
 export class DateRangeCalendar extends SearchkitComponent<any, any> {
-  constructor(props) {
+    refs: {
+        [key: string]: any;
+        dateFromInput: any;
+        dateToInput: any;
+    }
+
+    constructor(props) {
     super(props)
     const { fromDate, toDate } = props
     this.state = {
@@ -129,18 +127,27 @@ export class DateRangeCalendar extends SearchkitComponent<any, any> {
   handleChange = (value) => {
     const startValue = value[0]
     const endValue = value[1]
-    const { onFinished } = this.props
     const notToday = startValue > +moment().endOf("day")
-                  || startValue < +moment().startOf("day")
-    onFinished({
-      fromDate: notToday && startValue.startOf("day") || startValue,
-      toDate: endValue && endValue.endOf("day")
-    })
+                  || startValue < +moment().startOf("day");
+      const newState = {
+          fromDate: notToday && startValue.startOf("day") || startValue,
+          toDate: endValue && endValue.endOf("day")
+      };
+    this.setState(newState);
   }
 
-  render() {
+    handleDateFinished = (event) => {
+        const { onFinished } = this.props
+        const newState = {
+            fromDate: this.state.fromDate,
+            toDate: this.state.toDate
+        };
+        onFinished(newState)
+    }
+
+    render() {
     const state = this.state;
-    const { fromDate, toDate, fromDateValue, toDateValue } = this.props
+    const { fromDate, toDate } = this.props
 
     const fromLabel = "From";
     const toLabel = "To";
@@ -151,8 +158,8 @@ export class DateRangeCalendar extends SearchkitComponent<any, any> {
           onOpenChange={this.onStartOpenChange}
           open={this.state.startOpen}
           type="start"
-          showValue={fromDateValue}
-          value={[fromDate, toDate]}
+          showValue={state.fromDate || fromDate}
+          value={[state.fromDate || fromDate, state.toDate ||toDate]}
           onChange={this.onStartChange}
           dateInputPlaceholder={fromLabel}
         />
@@ -160,12 +167,13 @@ export class DateRangeCalendar extends SearchkitComponent<any, any> {
           onOpenChange={this.onEndOpenChange}
           open={this.state.endOpen}
           type="end"
-          showValue={toDateValue}
+          showValue={state.toDate || toDate}
           disabledDate={this.disabledStartDate}
-          value={[fromDate, toDate]}
+          value={[state.fromDate || fromDate, state.toDate ||toDate]}
           onChange={this.onEndChange}
           dateInputPlaceholder={toLabel}
         />
+        <button id="date-submit" onClick={this.handleDateFinished}>Go</button>
       </div>
     )
   }

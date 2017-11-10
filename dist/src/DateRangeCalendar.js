@@ -12,7 +12,6 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var moment = require("moment");
-var styles = require("rc-calendar/assets/index.css");
 var searchkit_1 = require("searchkit");
 var RcCalendar = require("rc-calendar");
 var RangeCalendar = require('rc-calendar/lib/RangeCalendar');
@@ -26,17 +25,13 @@ var Picker = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Picker.prototype.render = function () {
-        var _this = this;
         var props = this.props;
         var showValue = props.showValue;
         var calendar = (React.createElement(RangeCalendar, { type: this.props.type, locale: enUS, format: format, onChange: props.onChange, disabledDate: props.disabledDate, showToday: true, showOk: false, showClear: false }));
         return (React.createElement(DatePicker, { prefixCls: "sk-calendar-picker", open: this.props.open, onOpenChange: this.props.onOpenChange, calendar: calendar, value: props.value, dateFormat: format, align: {
                 points: ['bl', 'tl']
             } }, function () { return (React.createElement("div", { className: "sk-date-box" },
-            React.createElement("div", { className: "sk-date-box__label", style: { flex: "1 0 80px" } },
-                _this.props.dateInputPlaceholder,
-                ":"),
-            React.createElement("div", { className: "sk-date-box__value", style: { flex: "1 0 50%" } }, showValue && moment(showValue).format(fullFormat)))); }));
+            React.createElement("div", { className: "sk-date-box__value", style: { flex: "1 0 50%" } }, (showValue && moment(showValue).format(fullFormat)) || props.dateInputPlaceholder))); }));
     };
     return Picker;
 }(searchkit_1.SearchkitComponent));
@@ -98,13 +93,21 @@ var DateRangeCalendar = (function (_super) {
         _this.handleChange = function (value) {
             var startValue = value[0];
             var endValue = value[1];
-            var onFinished = _this.props.onFinished;
             var notToday = startValue > +moment().endOf("day")
                 || startValue < +moment().startOf("day");
-            onFinished({
+            var newState = {
                 fromDate: notToday && startValue.startOf("day") || startValue,
                 toDate: endValue && endValue.endOf("day")
-            });
+            };
+            _this.setState(newState);
+        };
+        _this.handleDateFinished = function (event) {
+            var onFinished = _this.props.onFinished;
+            var newState = {
+                fromDate: _this.state.fromDate,
+                toDate: _this.state.toDate
+            };
+            onFinished(newState);
         };
         var fromDate = props.fromDate, toDate = props.toDate;
         _this.state = {
@@ -115,12 +118,13 @@ var DateRangeCalendar = (function (_super) {
     }
     DateRangeCalendar.prototype.render = function () {
         var state = this.state;
-        var _a = this.props, fromDate = _a.fromDate, toDate = _a.toDate, fromDateValue = _a.fromDateValue, toDateValue = _a.toDateValue;
+        var _a = this.props, fromDate = _a.fromDate, toDate = _a.toDate;
         var fromLabel = "From";
         var toLabel = "To";
         return (React.createElement("div", null,
-            React.createElement(Picker, { onOpenChange: this.onStartOpenChange, open: this.state.startOpen, type: "start", showValue: fromDateValue, value: [fromDate, toDate], onChange: this.onStartChange, dateInputPlaceholder: fromLabel }),
-            React.createElement(Picker, { onOpenChange: this.onEndOpenChange, open: this.state.endOpen, type: "end", showValue: toDateValue, disabledDate: this.disabledStartDate, value: [fromDate, toDate], onChange: this.onEndChange, dateInputPlaceholder: toLabel })));
+            React.createElement(Picker, { onOpenChange: this.onStartOpenChange, open: this.state.startOpen, type: "start", showValue: state.fromDate || fromDate, value: [state.fromDate || fromDate, state.toDate || toDate], onChange: this.onStartChange, dateInputPlaceholder: fromLabel }),
+            React.createElement(Picker, { onOpenChange: this.onEndOpenChange, open: this.state.endOpen, type: "end", showValue: state.toDate || toDate, disabledDate: this.disabledStartDate, value: [state.fromDate || fromDate, state.toDate || toDate], onChange: this.onEndChange, dateInputPlaceholder: toLabel }),
+            React.createElement("button", { id: "date-submit", onClick: this.handleDateFinished }, "Go")));
     };
     return DateRangeCalendar;
 }(searchkit_1.SearchkitComponent));
