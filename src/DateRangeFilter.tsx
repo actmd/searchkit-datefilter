@@ -18,7 +18,6 @@ import {
 
 import {
   defaults,
-  map,
   get
 } from "lodash"
 
