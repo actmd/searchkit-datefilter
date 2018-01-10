@@ -18,7 +18,8 @@ import {
 
 import {
   defaults,
-  get
+  get,
+  find
 } from "lodash"
 
 
@@ -147,8 +148,17 @@ export class DateRangeFilter extends SearchkitComponent<DateRangeFilterProps, an
   }
 
   calendarUpdateAndSearch = (newValues) => {
-    this.calendarUpdate(newValues)
-    this.searchkit.performSearch()
+    this.calendarUpdate(newValues);
+
+
+    const dueFilter = find(this.getQuery().getSelectedFilters(), function (o) {
+      return (o as any).id  === "due";
+    });
+
+    if(dueFilter){
+      (dueFilter as any).remove();
+    }
+    this.searchkit.performSearch();
   }
 
   getCalendarComponent() {

@@ -60,6 +60,12 @@ var DateRangeFilter = (function (_super) {
         };
         _this.calendarUpdateAndSearch = function (newValues) {
             _this.calendarUpdate(newValues);
+            var dueFilter = lodash_1.find(_this.getQuery().getSelectedFilters(), function (o) {
+                return o.id === "due";
+            });
+            if (dueFilter) {
+                dueFilter.remove();
+            }
             _this.searchkit.performSearch();
         };
         return _this;
