@@ -46,6 +46,7 @@ var DateRangeFilter = (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.handleClearState = function () {
             _this.accessor.resetState();
+            _this.forceUpdate();
         };
         _this.setCalendarState = function (newValues) {
             if (!newValues.fromDate) {

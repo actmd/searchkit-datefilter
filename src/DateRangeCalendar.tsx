@@ -62,6 +62,11 @@ export class DateRangeCalendar extends SearchkitComponent<any, any> {
     }
   }
 
+  componentWillReceiveProps(nextProps){
+    const { fromDate, toDate } = nextProps;
+    this.handleChange([fromDate, toDate])
+  }
+
   onStartOpenChange = (startOpen) => {
     this.setState({
       startOpen,

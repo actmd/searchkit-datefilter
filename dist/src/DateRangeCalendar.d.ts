@@ -5,6 +5,7 @@ export declare class Picker extends SearchkitComponent<any, any> {
 }
 export declare class DateRangeCalendar extends SearchkitComponent<any, any> {
     constructor(props: any);
+    componentWillReceiveProps(nextProps: any): void;
     onStartOpenChange: (startOpen: any) => void;
     onEndOpenChange: (endOpen: any) => void;
     onStartChange: (value: any) => void;

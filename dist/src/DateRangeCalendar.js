@@ -116,6 +116,10 @@ var DateRangeCalendar = (function (_super) {
         };
         return _this;
     }
+    DateRangeCalendar.prototype.componentWillReceiveProps = function (nextProps) {
+        var fromDate = nextProps.fromDate, toDate = nextProps.toDate;
+        this.handleChange([fromDate, toDate]);
+    };
     DateRangeCalendar.prototype.render = function () {
         var state = this.state;
         var _a = this.props, fromDate = _a.fromDate, toDate = _a.toDate;
