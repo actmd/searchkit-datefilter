@@ -30,7 +30,7 @@ var Picker = (function (_super) {
         var calendar = (React.createElement(RangeCalendar, { type: this.props.type, locale: enUS, format: format, onChange: props.onChange, disabledDate: props.disabledDate, showToday: true, showOk: false, showClear: false }));
         return (React.createElement(DatePicker, { prefixCls: "sk-calendar-picker", open: this.props.open, onOpenChange: this.props.onOpenChange, calendar: calendar, value: props.value, dateFormat: format, align: {
                 points: ['bl', 'tl']
-            } }, function () { return (React.createElement("div", { className: "sk-date-box" },
+            } }, function () { return (React.createElement("div", { className: "sk-date-box form-control form-control-sm" },
             React.createElement("div", { className: "sk-date-box__value", style: { flex: "1 0 50%" } }, (showValue && moment(showValue).format(fullFormat)) || props.dateInputPlaceholder))); }));
     };
     return Picker;
@@ -128,7 +128,7 @@ var DateRangeCalendar = (function (_super) {
         return (React.createElement("div", null,
             React.createElement(Picker, { onOpenChange: this.onStartOpenChange, open: this.state.startOpen, type: "start", showValue: state.fromDate || fromDate, value: [state.fromDate || fromDate, state.toDate || toDate], onChange: this.onStartChange, dateInputPlaceholder: fromLabel }),
             React.createElement(Picker, { onOpenChange: this.onEndOpenChange, open: this.state.endOpen, type: "end", showValue: state.toDate || toDate, disabledDate: this.disabledStartDate, value: [state.fromDate || fromDate, state.toDate || toDate], onChange: this.onEndChange, dateInputPlaceholder: toLabel }),
-            React.createElement("button", { id: "date-submit", onClick: this.handleDateFinished }, "Go")));
+            React.createElement("button", { id: "date-submit", className: "btn btn-sm btn-primary", onClick: this.handleDateFinished }, "Go")));
     };
     return DateRangeCalendar;
 }(searchkit_1.SearchkitComponent));

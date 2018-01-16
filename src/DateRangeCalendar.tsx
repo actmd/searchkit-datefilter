@@ -40,7 +40,7 @@ export class Picker extends SearchkitComponent<any, any> {
       >
         {
           () => (
-            <div className="sk-date-box">
+            <div className="sk-date-box form-control form-control-sm">
               <div className="sk-date-box__value" style={{flex:"1 0 50%"}}>
                 {(showValue && moment(showValue).format(fullFormat)) || props.dateInputPlaceholder}
               </div>
@@ -172,7 +172,7 @@ export class DateRangeCalendar extends SearchkitComponent<any, any> {
           onChange={this.onEndChange}
           dateInputPlaceholder={toLabel}
         />
-        <button id="date-submit" onClick={this.handleDateFinished}>Go</button>
+        <button id="date-submit" className="btn btn-sm btn-primary" onClick={this.handleDateFinished}>Go</button>
       </div>
     )
   }
