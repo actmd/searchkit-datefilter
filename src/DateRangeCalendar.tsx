@@ -8,7 +8,7 @@ const enUS = require('rc-calendar').enUS;
 const DatePicker = require('rc-calendar/lib/Picker');
 
 const format = 'dddd D. MMMM YYYY';
-const fullFormat = 'ddd D.M.Y';
+const fullFormat = 'DD MMM YYYY';
 
 export class Picker extends SearchkitComponent<any, any> {
   render() {
