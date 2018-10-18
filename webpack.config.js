@@ -12,20 +12,16 @@ module.exports = {
     filename: '[name].js',
     library: 'searchkit-datefilter',
     libraryTarget: 'umd',
-    publicPath: '',
-    css: 'theme.css'
+    publicPath: ''
   },
   resolve: {
-    extensions: ["", ".js", ".ts", ".tsx", ".webpack.js", ".web.js", ".scss"],
-    fallback: path.join(__dirname, "node_modules")
-  },
-  postcss: function () {
-    return [autoprefixer]
+    extensions: [".js", ".ts", ".tsx", ".webpack.js", ".web.js", ".scss"],
+    modules: [path.join(__dirname, "node_modules")]
   },
   plugins: [
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new ExtractTextPlugin("theme.css", {allChunks:true}),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new ExtractTextPlugin({filename: "theme.css", allChunks:true}),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
         except: ['require', 'export', '$super']
@@ -50,20 +46,40 @@ module.exports = {
     'lodash',
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.tsx?$/,
-        loaders: ['ts'],
+        loader: 'ts-loader',
         include: [path.join(__dirname, 'src'),path.join(__dirname, 'theming')]
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(require.resolve("style-loader"),require.resolve("css-loader")+"!"+require.resolve("postcss-loader")+"!"+require.resolve("sass-loader")),
+        loader: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          loaders: [
+            {
+              loader: 'css-loader',
+            },
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ]
+        }),
         include: path.join(__dirname, 'theming')
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract(require.resolve("style-loader"),require.resolve("css-loader"))
+        loader: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          loaders: [
+            {
+              loader: 'css-loader',
+            }
+          ]
+        })
       }
     ]
   }

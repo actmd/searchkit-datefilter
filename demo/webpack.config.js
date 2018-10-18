@@ -17,18 +17,18 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   resolve: {
-    extensions:["", ".js", ".ts", ".tsx", ".webpack.js", ".web.js"],
-    fallback: path.join(__dirname, "node_modules")
+    extensions:[".js", ".ts", ".tsx", ".webpack.js", ".web.js"],
+    modules: [path.join(__dirname, "node_modules")]
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.tsx?$/,
-        loaders: ['ts']
+        loaders: ['ts-loader']
       },
       {
         test: /\.(scss|css)$/,
