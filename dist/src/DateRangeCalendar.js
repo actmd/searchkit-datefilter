@@ -28,7 +28,7 @@ var Picker = (function (_super) {
         var props = this.props;
         var showValue = props.showValue;
         var calendar = (React.createElement(RangeCalendar, { type: this.props.type, locale: enUS, format: format, onChange: props.onChange, disabledDate: props.disabledDate, showToday: true, showOk: false, showClear: false }));
-        return (React.createElement(DatePicker, { prefixCls: "sk-calendar-picker", open: this.props.open, onOpenChange: this.props.onOpenChange, calendar: calendar, value: props.value, dateFormat: format, align: {
+        return (React.createElement(DatePicker, { prefixCls: "sk-calendar-picker", open: this.props.open, onOpenChange: this.props.onOpenChange, calendar: calendar, value: props.value, dateFormat: format, placement: "right", align: {
                 points: ['bl', 'tl']
             } }, function () { return (React.createElement("div", { className: "sk-date-box form-control form-control-sm" },
             React.createElement("div", { className: "sk-date-box__value", style: { flex: "1 0 50%" } }, (showValue && moment(showValue).format(fullFormat)) || props.dateInputPlaceholder))); }));

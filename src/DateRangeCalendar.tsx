@@ -34,6 +34,7 @@ export class Picker extends SearchkitComponent<any, any> {
         calendar={calendar}
         value={props.value}
         dateFormat={format}
+        placement="right"
         align={{
           points: ['bl', 'tl']
         }}
